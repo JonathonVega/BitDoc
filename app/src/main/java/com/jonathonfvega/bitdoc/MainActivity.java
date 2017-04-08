@@ -1,10 +1,13 @@
 package com.jonathonfvega.bitdoc;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,20 +18,17 @@ import com.ibm.watson.developer_cloud.visual_recognition.v3.VisualRecognition;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifyImagesOptions;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.VisualClassification;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int SELECTED_PIC=1;
+    int TAKE_PHOTO_CODE = 0;
+    public static int count = 0;
+    public String dir;
 
-    public String filePath;
-
-    private VisualRecognition initVisualRecognition() {
-        VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
-        service.setApiKey("b679b786b434d320c1bec68f3173225f9a232879");
-
-        return service;
-    }
+    public File mfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,27 +36,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
+        this.dir = dir;
+        File newDir = new File(dir);
+        newDir.mkdirs();
+    }
 
-        /*WatsonTask task = new WatsonTask();
-        task.execute(new String[]{});
+    private VisualRecognition initVisualRecognition() {
+        VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
+        service.setApiKey("b679b786b434d320c1bec68f3173225f9a232879");
 
-        {
-            "url": "https://gateway-a.watsonplatform.net/visual-recognition/api",
-                "note": "This is your previous free key. If you want a different one, please wait 24 hours after unbinding the key and try again.",
-                "api_key": "b679b786b434d320c1bec68f3173225f9a232879"
-        }
-
-        System.out.println("Classify an image");
-        ClassifyImagesOptions options = new ClassifyImagesOptions.Builder()
-                .images(new File("src/test/resources/visual_recognition/car.png"))
-                .build();
-        VisualClassification result = service.classify(options).execute();
-        System.out.println(result);
-        */
-
-
-
-
+        return service;
     }
 
     private class WatsonTask extends AsyncTask<String, Void, String> {
@@ -66,11 +56,10 @@ public class MainActivity extends AppCompatActivity {
             // do above Server call here
 
 
-
             VisualRecognition service = initVisualRecognition();
             System.out.println("Classify an image");
             ClassifyImagesOptions options = new ClassifyImagesOptions.Builder()
-                    .images(new File(filePath))
+                    .images(mfile)
                     .build();
             VisualClassification result = service.classify(options).execute();
             System.out.println(result);
@@ -89,36 +78,49 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void btnClick(View v) {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, SELECTED_PIC);
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case SELECTED_PIC:
-                if (resultCode==RESULT_OK) {
-                    Uri uri = data.getData();
-                    String[] projection = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(uri,projection,null,null,null);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(projection[0]);
-                    String filepath=cursor.getString(columnIndex);
-                    this.filePath = filepath;
-                    Log.d("Hello", "This is here!!!!" + filepath);
 
-                    cursor.close();
+        if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-                    WatsonTask task = new WatsonTask();
-                    task.execute("This should work");
-                }
-                break;
-            default:
-                break;
+
+
+            // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+            Uri tempUri = getImageUri(getApplicationContext(), photo);
+
+            // CALL THIS METHOD TO GET THE ACTUAL PATH
+            File finalFile = new File(getRealPathFromURI(tempUri));
+
+            mfile = finalFile;
+
+            WatsonTask task = new WatsonTask();
+            task.execute("This should work");
         }
 
 
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
     }
 
 }
