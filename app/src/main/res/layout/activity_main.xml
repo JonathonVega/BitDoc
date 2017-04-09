@@ -12,24 +12,6 @@
     android:background="@color/red"
     tools:context="com.jonathonfvega.bitdoc.MainActivity">
 
-    <Button
-        android:text="-Scan-"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:onClick="btnClick"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp" />
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="25dp"
-        android:id="@+id/heart_pulse"
-        android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true" />
-
     <TextView
         android:text="bitDoc"
         android:textColor="@color/white"
@@ -40,5 +22,34 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="62dp"
         android:id="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hr"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:textColor="@color/white"
+        android:text="                              " />
+
+    <Button
+        android:text="-Scan-"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:onClick="btnClick"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="25dp"
+        android:id="@+id/heart_pulse"
+        android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
