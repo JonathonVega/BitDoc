@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -12,7 +13,9 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.ibm.watson.developer_cloud.visual_recognition.v3.VisualRecognition;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifyImagesOptions;
@@ -22,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
+
 public class MainActivity extends AppCompatActivity {
 
     int TAKE_PHOTO_CODE = 0;
@@ -30,10 +34,17 @@ public class MainActivity extends AppCompatActivity {
 
     public File mfile;
 
+    AnimationDrawable heartPulseAnimation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        ImageView heartPulse = (ImageView)findViewById(R.id.heart_pulse);
+        heartPulse.setBackgroundResource(R.drawable.heart_pulse);
+        heartPulseAnimation = (AnimationDrawable) heartPulse.getBackground();
 
 
         final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
@@ -41,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         File newDir = new File(dir);
         newDir.mkdirs();
     }
+
+
 
     private VisualRecognition initVisualRecognition() {
         VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
@@ -76,6 +89,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+   /*  tester touch event for animation
+
+   public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            heartPulseAnimation.start();
+            return true;
+        }
+        return super.onTouchEvent(event);
+    }*/
+
+
 
     public void btnClick(View v) {
 
@@ -104,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
 
             WatsonTask task = new WatsonTask();
             task.execute("This should work");
+
+            heartPulseAnimation.start();
         }
 
 

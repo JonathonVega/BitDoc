@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/bitdocsprite_00" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_01" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_02" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_03" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_04" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_05" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_06" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_07" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_08" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_09" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_10" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_11" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_12" android:duration="140"/>
+    <item android:drawable="@drawable/bitdocsprite_13" android:duration="140"/>
+
+</animation-list>
