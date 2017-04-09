@@ -19,10 +19,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 
 import com.ibm.watson.developer_cloud.visual_recognition.v3.VisualRecognition;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifyImagesOptions;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.VisualClassification;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -41,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
     AnimationDrawable heartPulseAnimation;
 
-    Fragment frag = new displayFrag();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
     private class WatsonTask extends AsyncTask<String, Void, String> {
 
+        String someString;
+
         @Override
         protected String doInBackground(String[] params) {
             // do above Server call here
@@ -82,8 +86,12 @@ public class MainActivity extends AppCompatActivity {
                     .images(mfile)
                     .build();
             VisualClassification result = service.classify(options).execute();
-            System.out.println(result);
-            return "some message";
+
+            System.out.print(result);
+            Double x = result.getImages().get(0).getClassifiers().get(0).getClasses().get(0).getScore();
+            someString = x + "";
+
+            return someString;
         }
 
 
@@ -91,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String message) {
             //process message
+            TextView viewk = (TextView) findViewById(R.id.textView);
+            viewk.setText(someString);
         }
     }
 
@@ -136,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
             WatsonTask task = new WatsonTask();
             task.execute("This should work");
 
+
             heartPulseAnimation.start();
         }
 
@@ -166,3 +177,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
