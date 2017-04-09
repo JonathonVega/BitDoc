@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     AnimationDrawable heartPulseAnimation;
 
+    Intent intent ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
             System.out.print(result);
             Double x = result.getImages().get(0).getClassifiers().get(0).getClasses().get(0).getScore();
-            someString = x + "";
+            someString += "";
 
             return someString;
         }
@@ -99,8 +101,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String message) {
             //process message
-            TextView viewk = (TextView) findViewById(R.id.textView);
-            viewk.setText(someString);
+            //TextView viewk = (TextView) findViewById(R.id.textView);
+            //viewk.setText(someString);
+
+
+
+            //debuggin purposes vega
+            System.out.println("testing -- " + someString);
         }
     }
 
@@ -168,13 +175,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    //second button test frag
-
-    public void btn2Click(View v){
-
-        Intent intent = new Intent(this, dataDisplay.class);
+    public void showData(String someString){
+        new Intent(getApplicationContext(), dataDisplay.class);
+        intent.putExtra("VALUE1",someString);
         startActivity(intent);
     }
+
 }
 
