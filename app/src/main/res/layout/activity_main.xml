@@ -41,4 +41,13 @@
         android:layout_marginTop="62dp"
         android:id="@+id/textView" />
 
+    <Button
+        android:text="intentTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:onClick="btn2Click"
+        android:layout_alignEnd="@+id/button"
+        android:id="@+id/button2" />
+
 </RelativeLayout>

@@ -1,5 +1,8 @@
 package com.jonathonfvega.bitdoc;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,6 +28,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
+import static android.R.id.button2;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     public File mfile;
 
     AnimationDrawable heartPulseAnimation;
+
+    Fragment frag = new displayFrag();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,4 +156,13 @@ public class MainActivity extends AppCompatActivity {
         return cursor.getString(idx);
     }
 
+
+
+    //second button test frag
+
+    public void btn2Click(View v){
+
+        Intent intent = new Intent(this, dataDisplay.class);
+        startActivity(intent);
+    }
 }
