@@ -8,8 +8,10 @@
     <color name="red">#ed0f0b</color>
 
     <color name="grey">#898989</color>
-    <color name="darkGrey">#895989</color>
+    <color name="darkGrey">#3d3d3d</color>
     <color name="lightGrey">#898959</color>
+
+    <color name="black">#000</color>
 
     <color name="black_overlay">#66000000</color>
 
